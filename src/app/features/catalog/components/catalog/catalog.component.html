@@ -1,0 +1,112 @@
+<div class="container mt-4">
+
+  <!-- BOTÓN ATRÁS -->
+  <button *ngIf="navigationStack.length"
+          class="btn btn-sm btn-secondary mb-2"
+          (click)="goBack()">
+    ← Atrás
+  </button>
+
+  <div class="row">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="col-4 border-end category-column">
+
+      <!-- Categorías iniciales -->
+      <div *ngIf="!navigationStack.length">
+        <div *ngFor="let category of categories" 
+             class="p-2 border-bottom"
+             [class.bg-light]="category === selectedCategory">
+
+          <label class="w-100 d-flex justify-content-between align-items-center">
+            <span>{{ category.name }}</span>
+            <input type="radio"
+                   [id]="'left-radio-' + category.id"
+                   name="leftRadio"
+                   class="form-check-input"
+                   [checked]="category === selectedCategory"
+                   (change)="selectCategory(category)" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Último subproducto seleccionado -->
+      <div *ngIf="navigationStack.length">
+        <div class="p-2 border-bottom bg-light d-flex align-items-center">
+
+          <img *ngIf="navigationStack[navigationStack.length -1].photo"
+               [src]="navigationStack[navigationStack.length -1].photo"
+               [alt]="navigationStack[navigationStack.length -1].name + ' imagen del producto'"
+               class="product-img" />
+
+          <div class="ms-2 flex-grow-1">
+            <div><strong>{{ navigationStack[navigationStack.length -1].name }}</strong></div>
+            <div *ngIf="navigationStack[navigationStack.length -1].format?.description">
+              {{ navigationStack[navigationStack.length -1].format.description }}
+            </div>
+            <div *ngIf="navigationStack[navigationStack.length -1].price?.amount">
+              {{ navigationStack[navigationStack.length -1].price.amount | number:'1.2-2' }} €
+            </div>
+          </div>
+
+          <!-- Radio solo si tiene subproductos -->
+          <div *ngIf="isSelectable(navigationStack[navigationStack.length -1])">
+            <label class="d-flex align-items-center">
+              <input type="radio"
+                     [id]="'left-radio-' + navigationStack[navigationStack.length -1].id"
+                     name="leftRadio"
+                     class="form-check-input me-2"
+                     [checked]="selectedLeftId === navigationStack[navigationStack.length -1].id"
+                     (change)="selectLeftRadio(navigationStack[navigationStack.length -1])" />
+              Seleccionar
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="col-8 product-column">
+
+      <ng-container *ngIf="selectedProducts.length; else empty">
+
+        <div *ngFor="let product of selectedProducts" 
+             class="p-2 border-bottom d-flex align-items-center"
+             [ngClass]="animationDirection === 'left' ? 'slide-left' : 'slide-right'">
+
+          <img *ngIf="product.photo"
+               [src]="product.photo"
+               [alt]="product.name + ' imagen del producto'"
+               class="product-img" />
+
+          <div class="ms-2 flex-grow-1">
+            <div><strong>{{ product.name }}</strong></div>
+            <div *ngIf="product.format?.description">{{ product.format.description }}</div>
+            <div *ngIf="product.price?.amount">{{ product.price.amount | number:'1.2-2' }} €</div>
+          </div>
+
+          <div *ngIf="isSelectable(product)">
+            <label class="d-flex align-items-center">
+              <input type="radio"
+                     [id]="'right-radio-' + product.id"
+                     name="rightRadio"
+                     class="form-check-input me-2"
+                     [checked]="selectedRightId === product.id"
+                     (change)="selectRightRadio(product)" />
+              Seleccionar
+            </label>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <ng-template #empty>
+        <p class="text-muted text-center mt-5">Seleccione una categoría</p>
+      </ng-template>
+
+    </div>
+
+  </div>
+</div>
