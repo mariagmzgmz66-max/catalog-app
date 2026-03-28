@@ -1,0 +1,24 @@
+/* Tarjetas de categoría */
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  min-height: 50px;
+}
+
+.category-item.bg-light {
+  background-color: #f8f9fa;
+}
+
+.category-item span {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-check-input {
+  margin-left: 8px;
+}

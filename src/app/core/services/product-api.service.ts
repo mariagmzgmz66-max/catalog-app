@@ -33,7 +33,6 @@ private buildHierarchy(products: Product[]): Product[] {
     }
   });
 
-  // 🔥 DEVOLVEMOS TODOS (NO FILTRAMOS AQUÍ)
   return Array.from(map.values());
 }
 }

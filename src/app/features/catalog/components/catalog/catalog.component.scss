@@ -1,14 +1,82 @@
-.category-column, .product-column {
-  max-height: 650px;
-  overflow-y: auto;
+/* Contenedor general */
+.container.mt-4 {
+  display: flex;
+  flex-direction: column;
+  height: 750px;
 }
 
+/* Row que contiene columnas */
+.row {
+  display: flex;
+  height: 100%;
+  gap: 16px;
+}
+
+/* Columnas izquierda y derecha */
+.category-column,
+.product-column {
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Columna izquierda: 30% */
+.category-column {
+  flex: 0 0 30%;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Columna derecha: resto */
+.product-column {
+  flex: 1;
+}
+
+/* Tarjetas generales */
+.category-column .border-bottom,
+.product-column .border-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  min-height: 60px;
+}
+
+/* Imagenes de productos */
 .product-img {
   width: 50px;
   height: 50px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
+/* Radio buttons */
 .form-check-input {
   margin-right: 8px;
+}
+
+/* Texto largo */
+strong,
+span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* BOTÓN ATRÁS PEQUEÑO */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem; /* pequeño */
+  color: #28a745;
+  cursor: pointer;
+  margin-bottom: 8px;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
 }
