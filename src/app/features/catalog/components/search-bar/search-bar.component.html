@@ -1,0 +1,13 @@
+<div class="search-bar-container">
+  <div class="input-group">
+    <input type="text"
+           class="form-control"
+           placeholder="Busca producto por nombre"
+           [(ngModel)]="searchText"
+           (input)="onSearch()"
+           aria-label="Buscar producto">
+    <span class="input-group-text">
+      <i class="bi bi-search search-icon"></i>
+    </span>
+  </div>
+</div>

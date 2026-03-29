@@ -1,0 +1,26 @@
+.search-bar-container {
+  margin: 25px 40px 20px 40px; 
+}
+
+.input-group .form-control {
+  height: 45px;            
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ddd;
+}
+
+.input-group .form-control:focus {
+  box-shadow: none;
+  border-color: #28a745;
+}
+
+.input-group .input-group-text {
+  background-color: #fff;
+  border-radius: 0 8px 8px 0;
+  border-left: 0;
+  cursor: pointer;
+}
+
+.search-icon {
+  color: #28a745; 
+  font-size: 1.3rem; 
+}

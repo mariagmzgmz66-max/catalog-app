@@ -13,8 +13,10 @@ selectedCategory = signal<Product | null>(null);
 navigationStack = signal<Product[]>([]);
 animationDirection = signal<'left' | 'right'>('left');
 
+searchQuery = signal(''); // para el texto del buscador
 
-  constructor(private productService: ProductApiService) {}
+constructor(private productService: ProductApiService) {}
+
 ngOnInit(): void {
   this.productService.getProducts().subscribe(products => {
     // Categorías principales: no tienen padre
@@ -22,7 +24,25 @@ ngOnInit(): void {
     this.categories.set(mainCategories);
   });
 }
+get searchText(): string {
+  return this.searchQuery();
+}
+set searchText(value: string) {
+  this.searchQuery.set(value);
+}
+// Productos filtrados según el buscador
+filteredProducts = computed(() => {
+  const query = this.searchQuery().toLowerCase().trim();
 
+  // Solo filtra si hay categoría seleccionada y query >= 3
+  if (!this.selectedCategory() || query.length < 3) {
+    return this.selectedProducts();
+  }
+
+  return this.selectedProducts().filter(product =>
+    product.name.toLowerCase().includes(query)
+  );
+});
 currentProduct = computed(() => {
   const stack = this.navigationStack();
   return stack.length ? stack[stack.length - 1] : null;
