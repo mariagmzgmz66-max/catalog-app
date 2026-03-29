@@ -1,5 +1,5 @@
 <div *ngFor="let category of categories" 
-     class="p-2 border-bottom"
+     class="card-item"
      [class.bg-light]="category.id === selectedCategoryId">
   <label class="w-100 d-flex justify-content-between align-items-center">
     <span>{{ category.name }}</span>

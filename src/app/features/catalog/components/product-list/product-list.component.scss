@@ -1,49 +1,48 @@
-/* Tarjetas de producto */
-.product-item {
+/* SCSS global o en cada componente */
+.card-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  min-height: 60px;
-  transition: all 0.3s ease;
+  justify-content: space-between;
+  padding: 20px;       /* mismo padding */
+  gap: 12px;           /* espacio entre imagen y texto */
+  border-radius: 8px;  /* borde redondeado */
+  border: 1px solid #eee;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 80px;    /* misma altura para todos */
+  background-color: #fff;
+  transition: background 0.2s ease;
+}
+/* Espacio entre el header y la primera tarjeta de productos */
+.card-item:first-child {
+  margin-top: 24px; /* Ajusta este valor para más o menos espacio */
+}
+.card-item:hover {
+  background-color: #f1f1f1;
 }
 
-/* Animaciones de deslizamiento */
-.slide-left {
-  animation: slideLeft 0.3s ease;
-}
-.slide-right {
-  animation: slideRight 0.3s ease;
+.card-item.bg-light {
+  background-color: #f8f9fa;
 }
 
-@keyframes slideLeft {
-  from { transform: translateX(50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideRight {
-  from { transform: translateX(-50px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-/* Imagen de producto */
-.product-img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-/* Texto */
-.product-item div {
+.card-item span,
+.card-item div {
+  flex-grow: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Imagen de producto */
+.card-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
 /* Radio buttons */
-.form-check-input {
+.card-item .form-check-input {
   margin-left: 8px;
 }

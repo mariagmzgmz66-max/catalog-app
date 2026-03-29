@@ -1,9 +1,9 @@
 <div *ngFor="let product of products" 
-     class="p-2 border-bottom d-flex align-items-center"
+     class="card-item"
      [ngClass]="animationDirection === 'left' ? 'slide-left' : 'slide-right'">
-  
-  <img *ngIf="product.photo" [src]="product.photo" [alt]="product.name" class="product-img" />
-  
+
+  <img *ngIf="product.photo" [src]="product.photo" [alt]="product.name" />
+
   <div class="ms-2 flex-grow-1">
     <div><strong>{{ product.name }}</strong></div>
     <div *ngIf="product.format?.description">{{ product.format.description }}</div>

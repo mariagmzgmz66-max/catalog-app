@@ -1,75 +1,67 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../../../core/models/product.model';
 import { ProductApiService } from '../../../../core/services/product-api.service';
-
+import { signal, computed } from '@angular/core';
 @Component({
   selector: 'app-catalog',
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent implements OnInit {
+categories = signal<Product[]>([]);
+selectedCategory = signal<Product | null>(null);
+navigationStack = signal<Product[]>([]);
+animationDirection = signal<'left' | 'right'>('left');
 
-  categories: Product[] = [];
-  allProducts: Product[] = [];
-  selectedProducts: Product[] = [];
-  selectedCategory?: Product;
-
-  navigationStack: Product[] = [];
-  selectedLeftId: number | null = null;
-  selectedRightId: number | null = null;
-  animationDirection: 'left' | 'right' = 'left';
 
   constructor(private productService: ProductApiService) {}
+ngOnInit(): void {
+  this.productService.getProducts().subscribe(products => {
+    // Categorías principales: no tienen padre
+    const mainCategories = products.filter(p => !p.parent);
+    this.categories.set(mainCategories);
+  });
+}
 
-  ngOnInit(): void {
-    this.productService.getProducts().subscribe(products => {
-      this.allProducts = products;
-      this.categories = products.filter(p => !p.parent && !p.category_id);
-    });
+currentProduct = computed(() => {
+  const stack = this.navigationStack();
+  return stack.length ? stack[stack.length - 1] : null;
+});
+selectedProducts = computed(() => {
+  const current = this.currentProduct();
+  if (current) return current.subProducts || [];
+
+  const category = this.selectedCategory();
+  if (category) {
+    // Mostrar productos que tienen esta categoría como category_id
+    return this.categories()
+      .flatMap(cat => cat.subProducts || [])
+      .filter(p => p.category_id?.includes(category.id));
   }
 
-  /** Seleccionar categoría inicial */
-  onCategorySelected(category: Product) {
-    this.selectedCategory = category;
-    this.navigationStack = [];
-    this.selectedProducts = this.getProductsByCategory(category.id);
-    this.selectedLeftId = category.id;
-    this.selectedRightId = null;
-    this.animationDirection = 'left';
-  }
+  return [];
+});
+selectedLeftId = computed(() => {
+  return this.currentProduct()?.id ?? this.selectedCategory()?.id ?? null;
+});
+ onCategorySelected(category: Product) {
+  this.selectedCategory.set(category);
+  this.navigationStack.set([]);
+  this.animationDirection.set('left');
+}
+onProductSelected(product: Product) {
+  this.navigationStack.update(stack => [...stack, product]);
+  this.animationDirection.set('left');
+}
+goBack() {
+  this.navigationStack.update(stack => stack.slice(0, -1));
+  this.animationDirection.set('right');
 
-  /** Seleccionar producto/subcategoría */
-  onProductSelected(product: Product) {
-    this.navigationStack.push(product);
-    this.selectedLeftId = product.id;
-    this.selectedProducts = product.subProducts || [];
-    this.selectedRightId = null;
-    this.animationDirection = 'left';
-  }
-
-  /** Botón Atrás */
-  goBack(): void {
-    if (!this.navigationStack.length) return;
-
-    this.navigationStack.pop();
-    this.animationDirection = 'right';
-
-    if (!this.navigationStack.length) {
-      this.selectedProducts = this.getProductsByCategory(this.selectedCategory!.id);
-      this.selectedLeftId = this.selectedCategory!.id;
-      this.selectedRightId = null;
-    } else {
-      const last = this.navigationStack[this.navigationStack.length -1];
-      this.selectedProducts = last.subProducts || [];
-      this.selectedLeftId = last.id;
-      this.selectedRightId = null;
-    }
-  }
+  // Reset scroll columna derecha
+  const rightCol = document.querySelector('.product-column');
+  if (rightCol) rightCol.scrollTop = 0;
+}
 
 
-  getProductsByCategory(categoryId: number): Product[] {
-    return this.allProducts.filter(
-      p => p.category_id?.includes(categoryId) && !p.parent
-    );
-  }
+
 }

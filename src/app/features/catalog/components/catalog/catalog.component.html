@@ -1,52 +1,51 @@
-<div class="container mt-4">
-
-  <div class="row">
+<div class="catalog-container">
+  <div class="catalog-row">
 
     <!-- COLUMNA IZQUIERDA -->
-    <div class="col-4 border-end category-column">
+    <div class="catalog-col category-column">
 
-      <!-- BOTÓN ATRÁS PEQUEÑO -->
-      <span *ngIf="navigationStack.length" class="back-link" (click)="goBack()">
+      <!-- BOTÓN ATRÁS -->
+      <span *ngIf="navigationStack().length" class="back-link" (click)="goBack()">
         ← Atrás
       </span>
 
-      <ng-container *ngIf="!navigationStack.length">
-        <app-category-list [categories]="categories"
-                           [selectedCategoryId]="selectedLeftId!"
-                           (categorySelected)="onCategorySelected($event)">
-        </app-category-list>
-      </ng-container>
+      <div class="column-wrapper">
+        <!-- CATEGORÍAS PRINCIPALES -->
+        <ng-container *ngIf="!navigationStack().length">
+          <app-category-list
+            [categories]="categories()"
+            [selectedCategoryId]="selectedLeftId()!"
+            (categorySelected)="onCategorySelected($event)">
+          </app-category-list>
+        </ng-container>
 
-      <div *ngIf="navigationStack.length" class="p-2 border-bottom bg-light d-flex align-items-center">
-        <img *ngIf="navigationStack[navigationStack.length -1].photo"
-             [src]="navigationStack[navigationStack.length -1].photo"
-             [alt]="navigationStack[navigationStack.length -1].name"
-             class="product-img" />
-        <div class="ms-2 flex-grow-1">
-          <div><strong>{{ navigationStack[navigationStack.length -1].name }}</strong></div>
-          <div *ngIf="navigationStack[navigationStack.length -1].format?.description">
-            {{ navigationStack[navigationStack.length -1].format.description }}
-          </div>
-          <div *ngIf="navigationStack[navigationStack.length -1].price?.amount">
-            {{ navigationStack[navigationStack.length -1].price.amount | number:'1.2-2' }} €
+        <!-- PRODUCTO ACTUAL / SUBCATEGORÍA -->
+        <div *ngIf="currentProduct() as product" class="product-card-subcategory">
+          <img *ngIf="product.photo" [src]="product.photo" [alt]="product.name" />
+          <div class="product-info">
+            <strong>{{ product.name }}</strong>
+            <div *ngIf="product.format?.description">{{ product.format.description }}</div>
+            <div *ngIf="product.price?.amount">{{ product.price.amount | number:'1.2-2' }} €</div>
           </div>
         </div>
       </div>
+
     </div>
 
     <!-- COLUMNA DERECHA -->
-    <div class="col-8 product-column">
-      <ng-container *ngIf="selectedProducts.length; else empty">
-        <app-product-list [products]="selectedProducts"
-                          [selectedRightId]="selectedRightId"
-                          [animationDirection]="animationDirection"
-                          (productSelected)="onProductSelected($event)">
-        </app-product-list>
-      </ng-container>
-
-      <ng-template #empty>
-        <p class="text-muted text-center mt-5">Seleccione una categoría</p>
-      </ng-template>
+    <div class="catalog-col product-column">
+      <div class="column-wrapper">
+        <ng-container *ngIf="selectedProducts().length; else empty">
+          <app-product-list
+            [products]="selectedProducts()"
+            [animationDirection]="animationDirection()"
+            (productSelected)="onProductSelected($event)">
+          </app-product-list>
+        </ng-container>
+        <ng-template #empty>
+          <p class="text-muted text-center mt-5">Seleccione una categoría</p>
+        </ng-template>
+      </div>
     </div>
 
   </div>

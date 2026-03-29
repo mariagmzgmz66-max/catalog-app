@@ -1,82 +1,110 @@
 /* Contenedor general */
-.container.mt-4 {
-  display: flex;
-  flex-direction: column;
-  height: 750px;
-}
-
-/* Row que contiene columnas */
-.row {
-  display: flex;
+.catalog-container {
+  max-height: 750px;
   height: 100%;
-  gap: 16px;
-}
-
-/* Columnas izquierda y derecha */
-.category-column,
-.product-column {
-  overflow-y: auto;
-  padding: 0;
-}
-
-/* Columna izquierda: 30% */
-.category-column {
-  flex: 0 0 30%;
-  border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
-/* Columna derecha: resto */
-.product-column {
+/* Row principal */
+.catalog-row {
+  display: flex;
   flex: 1;
+  gap: 16px;
+  height: 100%;
+  overflow: hidden;
+  padding: 20px; /* margen externo general más amplio */
 }
 
-/* Tarjetas generales */
-.category-column .border-bottom,
-.product-column .border-bottom {
+/* Columnas */
+.catalog-col {
+  flex: 1; /* ambas columnas mismo ancho */
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* evita overflow horizontal */
+}
+
+/* Wrapper interno para scroll */
+.column-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 16px; /* más espacio entre tarjetas */
+  padding: 25px; /* más padding interno consistente */
+}
+
+/* Scroll estilizado */
+.column-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+.column-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+/* BOTÓN ATRÁS */
+.back-link {
+  font-size: 0.85rem;
+  color: #28a745;
+  cursor: pointer;
+  padding: 4px 0;
+  display: inline-block;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* TARJETAS CATEGORÍAS */
+.category-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  min-height: 60px;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px; /* aumenta altura y espacio */
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  min-height: 80px; /* mismo alto que productos */
 }
-
-/* Imagenes de productos */
-.product-img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-/* Radio buttons */
-.form-check-input {
-  margin-right: 8px;
-}
-
-/* Texto largo */
-strong,
-span {
-  display: block;
+.category-item:hover { background-color: #f1f1f1; }
+.category-item.bg-light { background-color: #f8f9fa; }
+.category-item span {
+  flex-grow: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.form-check-input { margin-left: 8px; }
 
-/* BOTÓN ATRÁS PEQUEÑO */
-.back-link {
-  display: inline-flex;
+/* TARJETAS PRODUCTOS / SUBCATEGORÍAS */
+.product-card-subcategory {
+  display: flex;
   align-items: center;
-  font-size: 0.85rem; /* pequeño */
-  color: #28a745;
-  cursor: pointer;
-  margin-bottom: 8px;
-  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px; /* mismo padding que categorías */
+  gap: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f8f9fa;
+  min-height: 80px; /* igual altura que categorías */
 }
 
-.back-link:hover {
-  text-decoration: underline;
+.product-card-subcategory img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
