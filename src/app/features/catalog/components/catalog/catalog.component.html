@@ -1,16 +1,27 @@
 <div class="catalog-container">
-  <div class="catalog-row">
+  <!-- BUSCADOR ALINEADO CON COLUMNAS -->
+  <div *ngIf="selectedCategory()" class="search-row">
+    <div class="input-group search-wrapper">
+      <input type="text"
+             class="form-control search-input"
+             placeholder="Busca producto por nombre"
+             [(ngModel)]="searchText"
+             aria-label="Buscar producto">
+      <button class="btn search-btn" type="button">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
 
+  <div class="catalog-row">
     <!-- COLUMNA IZQUIERDA -->
     <div class="catalog-col category-column">
-
       <!-- BOTÓN ATRÁS -->
       <span *ngIf="navigationStack().length" class="back-link" (click)="goBack()">
         ← Atrás
       </span>
 
       <div class="column-wrapper">
-        <!-- CATEGORÍAS PRINCIPALES -->
         <ng-container *ngIf="!navigationStack().length">
           <app-category-list
             [categories]="categories()"
@@ -19,7 +30,6 @@
           </app-category-list>
         </ng-container>
 
-        <!-- PRODUCTO ACTUAL / SUBCATEGORÍA -->
         <div *ngIf="currentProduct() as product" class="product-card-subcategory">
           <img *ngIf="product.photo" [src]="product.photo" [alt]="product.name" />
           <div class="product-info">
@@ -29,7 +39,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- COLUMNA DERECHA -->
@@ -37,7 +46,7 @@
       <div class="column-wrapper">
         <ng-container *ngIf="selectedProducts().length; else empty">
           <app-product-list
-            [products]="selectedProducts()"
+            [products]="filteredProducts()"
             [animationDirection]="animationDirection()"
             (productSelected)="onProductSelected($event)">
           </app-product-list>
@@ -47,6 +56,5 @@
         </ng-template>
       </div>
     </div>
-
   </div>
 </div>
