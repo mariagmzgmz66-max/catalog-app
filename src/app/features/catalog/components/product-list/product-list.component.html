@@ -1,0 +1,23 @@
+<div *ngFor="let product of products" 
+     class="card-item"
+     [ngClass]="animationDirection === 'left' ? 'slide-left' : 'slide-right'">
+
+  <img *ngIf="product.photo" [src]="product.photo" [alt]="product.name" />
+
+  <div class="ms-2 flex-grow-1">
+    <div><strong>{{ product.name }}</strong></div>
+    <div *ngIf="product.format?.description">{{ product.format.description }}</div>
+    <div *ngIf="product.price?.amount">{{ product.price.amount | number:'1.2-2' }} €</div>
+  </div>
+
+  <div *ngIf="isSelectable(product)">
+    <label class="d-flex align-items-center">
+      <input type="radio"
+             class="form-check-input me-2"
+             [checked]="selectedRightId === product.id"
+             (change)="selectProduct(product)" />
+      Seleccionar
+    </label>
+  </div>
+
+</div>

@@ -1,0 +1,52 @@
+<div class="catalog-container">
+  <div class="catalog-row">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="catalog-col category-column">
+
+      <!-- BOTÓN ATRÁS -->
+      <span *ngIf="navigationStack().length" class="back-link" (click)="goBack()">
+        ← Atrás
+      </span>
+
+      <div class="column-wrapper">
+        <!-- CATEGORÍAS PRINCIPALES -->
+        <ng-container *ngIf="!navigationStack().length">
+          <app-category-list
+            [categories]="categories()"
+            [selectedCategoryId]="selectedLeftId()!"
+            (categorySelected)="onCategorySelected($event)">
+          </app-category-list>
+        </ng-container>
+
+        <!-- PRODUCTO ACTUAL / SUBCATEGORÍA -->
+        <div *ngIf="currentProduct() as product" class="product-card-subcategory">
+          <img *ngIf="product.photo" [src]="product.photo" [alt]="product.name" />
+          <div class="product-info">
+            <strong>{{ product.name }}</strong>
+            <div *ngIf="product.format?.description">{{ product.format.description }}</div>
+            <div *ngIf="product.price?.amount">{{ product.price.amount | number:'1.2-2' }} €</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="catalog-col product-column">
+      <div class="column-wrapper">
+        <ng-container *ngIf="selectedProducts().length; else empty">
+          <app-product-list
+            [products]="selectedProducts()"
+            [animationDirection]="animationDirection()"
+            (productSelected)="onProductSelected($event)">
+          </app-product-list>
+        </ng-container>
+        <ng-template #empty>
+          <p class="text-muted text-center mt-5">Seleccione una categoría</p>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>
