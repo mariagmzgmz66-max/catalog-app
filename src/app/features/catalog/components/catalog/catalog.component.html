@@ -1,17 +1,11 @@
 <div class="catalog-container">
   <!-- BUSCADOR ALINEADO CON COLUMNAS -->
-  <div *ngIf="selectedCategory()" class="search-row">
-    <div class="input-group search-wrapper">
-      <input type="text"
-             class="form-control search-input"
-             placeholder="Busca producto por nombre"
-             [(ngModel)]="searchText"
-             aria-label="Buscar producto">
-      <button class="btn search-btn" type="button">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </div>
+<!-- BUSCADOR -->
+<app-search-bar
+  *ngIf="selectedCategory()"
+  [(searchText)]="searchText"
+  (searchTriggered)="filteredProducts()">
+</app-search-bar>
 
   <div class="catalog-row">
     <!-- COLUMNA IZQUIERDA -->
